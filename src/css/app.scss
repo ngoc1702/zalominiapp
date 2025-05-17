@@ -12,3 +12,8 @@
 .zaui-list-item {
   cursor: pointer;
 }
+
+.zaui-bottom-navigation-item--active .zaui-bottom-navigation-item-icon,
+.zaui-bottom-navigation-item--active .zaui-bottom-navigation-item-label {
+  color: #F58220 !important;
+}
