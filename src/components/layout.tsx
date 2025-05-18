@@ -8,6 +8,7 @@ import {
   Header,
   useLocation,
 } from "zmp-ui";
+import { BrowserRouter } from "react-router-dom";
 import { AppProps } from "zmp-ui/app";
 
 import HomePage from "@/pages/index";
@@ -15,9 +16,11 @@ import CatergoriesPage from "@/pages/catergories";
 import ChatPage from "@/pages/chat";
 import ProfilePage from "@/pages/profile";
 import BottomNavBar from "./bottom_navigation";
+import RoomDetailPage from "@/pages/rooms/[slug]";
 
 const Layout = () => {
   return (
+    <BrowserRouter>
     <App theme={getSystemInfo().zaloTheme as AppProps["theme"]}>
       <SnackbarProvider>
         <ZMPRouter>
@@ -25,6 +28,7 @@ const Layout = () => {
         </ZMPRouter>
       </SnackbarProvider>
     </App>
+    </BrowserRouter>
   );
 };
 
@@ -57,6 +61,7 @@ const InnerLayout = () => {
         <Route path="/catergories" element={<CatergoriesPage />} />
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/rooms/:slug" element={<RoomDetailPage />} />
       </AnimationRoutes>
       <BottomNavBar />
     </>
