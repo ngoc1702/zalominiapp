@@ -1,3 +1,4 @@
+// Room_CATBA.tsx
 import React, { useEffect, useState } from "react";
 import { Text, Icon, useNavigate } from "zmp-ui";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -13,7 +14,7 @@ interface RoomItem {
   avatar: string;
 }
 
-function Room_CATBA() {
+function Room_DAILAI() {
   const [rooms, setRooms] = useState<RoomItem[]>([]);
   const navigate = useNavigate();
   console.log(navigate)
@@ -26,7 +27,7 @@ useEffect(() => {
       
       if (Array.isArray(data.data)) {
         const filteredRooms = data.data.filter(
-          (item: any) => item.category.name === "cat-ba"
+          (item: any) => item.category.name === "dai-lai"
         );
         const mappedRooms = filteredRooms.map((item: any) => ({
           id: item.id,
@@ -49,7 +50,7 @@ useEffect(() => {
 
   return (
     <>
-      <Text.Title size="large">Flamingo Cát Bà</Text.Title>
+      <Text.Title size="large">Flamingo Đại Lải</Text.Title>
       <div className="max-w-full overflow-hidden">
         <Swiper slidesPerView={2.4} spaceBetween={16} freeMode={true} modules={[FreeMode]}>
           {rooms.map((room) => (
@@ -81,4 +82,4 @@ useEffect(() => {
   );
 }
 
-export default Room_CATBA;
+export default Room_DAILAI;

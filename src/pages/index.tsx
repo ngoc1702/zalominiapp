@@ -2,6 +2,7 @@ import { openMiniApp } from "zmp-sdk";
 import { Box, Button, Icon, Page, Text,  } from "zmp-ui";
 import bg from "@/static/bg.svg";
 import Room_CATBA from "@/components/room_catba";
+import Room_DAILAI from "@/components/room_dailai";
 
 function HomePage() {
   return (
@@ -11,7 +12,8 @@ function HomePage() {
       //   backgroundImage: `url(${bg})`,
       // }}
     >
-      <Room_CATBA></Room_CATBA>
+      <Room_CATBA />
+      <Room_DAILAI/>
     </Page>
   );
 }
