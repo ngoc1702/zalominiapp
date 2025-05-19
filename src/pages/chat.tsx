@@ -1,16 +1,9 @@
-import { Box, Button, Icon, Page, Text,  } from "zmp-ui";
+import { useEffect } from "react";
 
-function ChatPage() {
-  return (
-     <Page
-      className="flex flex-col items-center justify-center space-y-6 bg-cover bg-center bg-no-repeat bg-white dark:bg-black"
-    >
-        CHAT
-    </Page>
-  )
- 
+export default function ChatPage() {
+  useEffect(() => {
+    window.location.href = "https://zalo.me/0396767186";
+  }, []);
+
+  return null; 
 }
-
-export default ChatPage;
-
-

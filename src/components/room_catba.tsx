@@ -1,42 +1,48 @@
-import { Text, Icon } from "zmp-ui";
+// Room_CATBA.tsx
+import React, { useEffect, useState } from "react";
+import { Text, Icon, useNavigate } from "zmp-ui";
 import { Swiper, SwiperSlide } from "swiper/react";
-import {  FreeMode } from "swiper/modules";
+import { FreeMode } from "swiper/modules";
 import "swiper/css";
-import { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
-
 
 interface RoomItem {
   id: number;
-  slug:string;
+  category:string;
+  slug: string;
   title: string;
-  price:string;
+  price: string;
   avatar: string;
 }
 
 function Room_CATBA() {
   const [rooms, setRooms] = useState<RoomItem[]>([]);
+  const navigate = useNavigate();
+  console.log(navigate)
 
 useEffect(() => {
   fetch("http://localhost:1337/api/rooms?populate=avatar")
     .then((res) => res.json())
     .then((data) => {
-      console.log("Raw data:", data);
+      console.log(data);
+      
       if (Array.isArray(data.data)) {
-        const mappedRooms = data.data.map((item: any) => ({
+        const filteredRooms = data.data.filter(
+          (item: any) => item.category === "cat-ba"
+        );
+        const mappedRooms = filteredRooms.map((item: any) => ({
           id: item.id,
+          category:item.category,
           title: item.title,
           slug: item.slug,
           price: item.price,
-          avatar:
-            item.avatar?.url
-              ? `http://localhost:1337${item.avatar.url}`
-              : undefined,
+          avatar: item.avatar?.url
+            ? `http://localhost:1337${item.avatar.url}`
+            : "",
         }));
         setRooms(mappedRooms);
       } else {
-        console.error("Dữ liệu trả về không đúng định dạng", data);
         setRooms([]);
+        console.error("Dữ liệu trả về không đúng định dạng", data);
       }
     })
     .catch((err) => console.error("Lỗi lấy bài viết:", err));
@@ -46,43 +52,31 @@ useEffect(() => {
     <>
       <Text.Title size="large">Flamingo Cát Bà</Text.Title>
       <div className="max-w-full overflow-hidden">
-      <Swiper
-        slidesPerView={2.4}
-        spaceBetween={16}
-        // loop={true}
-        freeMode={true}
-        modules={[FreeMode]}
-      >
-        {rooms.map((room) => (
-          <SwiperSlide key={room.id}>
-            <div className="bg-gray-100  rounded-lg">
-              <img
-                className="h-[18vh] rounded w-full object-cover object-center"
-                src={room.avatar}
-                alt="content"
-              />
-              <div className="p-2">
-              <Link to={`/rooms/${room.slug}`} onClick={() => console.log("Clicked slug:", room.slug)}>
-                <h2 className="text-sm text-[#16462F] font-medium title-font mb-[6px] uppercase line-clamp-2">
+        <Swiper slidesPerView={2.4} spaceBetween={16} freeMode={true} modules={[FreeMode]}>
+          {rooms.map((room) => (
+            <SwiperSlide key={room.id}>
+              <div
+                className="bg-gray-100 rounded-lg cursor-pointer"
+                onClick={() => navigate(`/rooms/${room.slug}`)}
+              >
+                <img
+                  className="h-[18vh] rounded w-full object-cover object-center"
+                  src={room.avatar}
+                  alt={room.title}
+                />
+                <div className="p-2">
+                  <h2 className="text-sm text-[#16462F] font-medium title-font mb-[6px] uppercase line-clamp-2">
                     {room.title}
-                </h2>
-                </Link>
-                <div className="flex justify-between items-center mb-1">
-                  <p className="text-sm text-[#F58220] font-medium title-font ">
-                     {room.price}
-                  </p>
-                  <Icon
-                    className="text-[#F58220] "
-                    icon="zi-plus-circle-solid"
-                    size={16}
-                  />
+                  </h2>
+                  <div className="flex justify-between items-center mb-1">
+                    <p className="text-sm text-[#F58220] font-medium title-font">{room.price}</p>
+                    <Icon className="text-[#F58220]" icon="zi-plus-circle-solid" size={16} />
+                  </div>
                 </div>
               </div>
-            </div>
-          
-          </SwiperSlide>
-        ))}
-      </Swiper>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
     </>
   );
