@@ -20,14 +20,14 @@ function Room_CATBA() {
   console.log(navigate)
 
 useEffect(() => {
-  fetch("http://localhost:1337/api/rooms?populate=avatar")
+  fetch("http://localhost:1337/api/rooms?populate[avatar]=true&populate[category]=true")
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
       
       if (Array.isArray(data.data)) {
         const filteredRooms = data.data.filter(
-          (item: any) => item.category === "cat-ba"
+          (item: any) => item.category.name === "cat-ba"
         );
         const mappedRooms = filteredRooms.map((item: any) => ({
           id: item.id,
