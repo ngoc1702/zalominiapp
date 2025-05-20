@@ -7,7 +7,7 @@ import Room_DAILAI from "@/components/room_dailai";
 function HomePage() {
   return (
     <Page
-      className="flex flex-col pt-28 px-3 space-y-6 bg-cover bg-center bg-no-repeat bg-white dark:bg-black"
+      className="flex flex-col pt-28 pb-20 px-3 space-y-6 bg-cover bg-center bg-no-repeat bg-white dark:bg-black"
       // style={{
       //   backgroundImage: `url(${bg})`,
       // }}

@@ -15,8 +15,8 @@ function BottomNavBar() {
       <BottomNavigation.Item
         key="/catergories"
         icon={<Icon icon="zi-list-1" />}
-        label="Danh mục"
-        onClick={() => navigate("/catergories")}
+        label="Cẩm nang"
+        onClick={() => navigate("/news")}
       />
       <BottomNavigation.Item
         key="/chat"

@@ -15,11 +15,13 @@ import {
 import { AppProps } from "zmp-ui/app";
 
 import HomePage from "@/pages/index";
-import ArticlesPage from "@/pages/news";
+import NewsPage from "@/pages/news";
 import ChatPage from "@/pages/chat";
 import ProfilePage from "@/pages/profile";
 import RoomDetailPage from "@/pages/rooms/[slug]";
+import PostDetailPage from "@/pages/posts/[slug]";
 import BottomNavBar from "./bottom_navigation";
+
 
 const InnerLayout = () => {
   const location = useLocation();
@@ -35,10 +37,11 @@ const InnerLayout = () => {
 
   const getTitleByPath = (path: string) => {
     if (path === "/") return "Trang chủ";
-    if (path === "/catergories") return "Danh mục";
+    if (path === "/news") return "Cẩm nang";
     if (path === "/chat") return "Tin nhắn";
     if (path === "/profile") return "Cá nhân";
     if (path.startsWith("/rooms/")) return "Chi tiết phòng";
+    if (path.startsWith("/posts/")) return "Chi tiết cẩm nang";
     return "Zalo Mini App";
   };
 
@@ -64,10 +67,11 @@ const InnerLayout = () => {
         <>
       <AnimationRoutes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/articles" element={<ArticlesPage />} />
+        <Route path="/news" element={<NewsPage />} />
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/profile" element={<ProfilePage />} />
-         <Route path="/rooms/:slug" element={<RoomDetailPage />} />
+        <Route path="/rooms/:slug" element={<RoomDetailPage />} />
+        <Route path="/posts/:slug" element={<PostDetailPage />} />
       </AnimationRoutes>
       <BottomNavBar />
       </>

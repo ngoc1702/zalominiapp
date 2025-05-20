@@ -19,7 +19,7 @@ interface RoomItem {
   gallery: string[];
 }
 
-export default function RoomDetailPage() {
+export default function PostDetailPage() {
   const location = useLocation();
   const [room, setRoom] = useState<RoomItem | null>(null);
   const [loading, setLoading] = useState(true);

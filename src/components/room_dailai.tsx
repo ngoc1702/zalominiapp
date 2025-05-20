@@ -27,8 +27,9 @@ useEffect(() => {
       
       if (Array.isArray(data.data)) {
         const filteredRooms = data.data.filter(
-          (item: any) => item.category.name === "dai-lai"
-        );
+  (item: any) => item.category && item.category.name === "dai-lai"
+);
+
         const mappedRooms = filteredRooms.map((item: any) => ({
           id: item.id,
           category:item.category,
