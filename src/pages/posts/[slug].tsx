@@ -14,7 +14,6 @@ interface RoomItem {
   id: number;
   slug: string;
   title: string;
-  price: string;
   content: string;
   gallery: string[];
 }
@@ -25,7 +24,7 @@ export default function PostDetailPage() {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
-  const slug = location.pathname.split("/rooms/")[1];
+  const slug = location.pathname.split("/posts/")[1];
 
   useEffect(() => {
     if (!slug) return;
@@ -33,7 +32,7 @@ export default function PostDetailPage() {
     setLoading(true);
     setNotFound(false);
 
-    fetch(`http://localhost:1337/api/rooms?populate=gallery`)
+    fetch(`http://localhost:1337/api/articles?populate=gallery`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data, "APIIII");
@@ -47,7 +46,6 @@ export default function PostDetailPage() {
             id: item.id,
             slug: item.slug,
             title: item.title,
-            price: item.price,
             content: item.content,
             gallery: item.gallery
               ? item.gallery.map((img: any) => `http://localhost:1337${img.url}`)
@@ -84,9 +82,7 @@ export default function PostDetailPage() {
       <Text.Title className="mb-2 uppercase">
         <strong>{room?.title}</strong>
       </Text.Title>
-
-     
-   {room?.gallery && room.gallery.length > 0 && (
+       {room?.gallery && room.gallery.length > 0 && (
   <Swiper
     modules={[FreeMode, Autoplay, Navigation, Pagination]}
     slidesPerView={1}
@@ -102,7 +98,7 @@ export default function PostDetailPage() {
     {room.gallery.map((url, idx) => (
       <SwiperSlide key={idx}>
         <img
-          className="h-[30vh] w-full rounded"
+          className="h-[30vh] w-full rounded object-cover"
           src={url.startsWith("http") ? url : `http://localhost:1337${url}`}
           alt={`${room.title || "image"} - ${idx + 1}`}
           style={{ display: "block", marginBottom: 8 }}
@@ -111,7 +107,8 @@ export default function PostDetailPage() {
     ))}
   </Swiper>
 )}
-
+     
+   
       <ReactMarkdown>{room?.content}</ReactMarkdown>
     </Page>
   );

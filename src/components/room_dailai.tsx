@@ -17,7 +17,7 @@ interface RoomItem {
 function Room_DAILAI() {
   const [rooms, setRooms] = useState<RoomItem[]>([]);
   const navigate = useNavigate();
-  console.log(navigate)
+
 
 useEffect(() => {
   fetch("http://localhost:1337/api/rooms?populate[avatar]=true&populate[category]=true")
