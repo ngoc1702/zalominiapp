@@ -33,7 +33,7 @@ export default function RoomDetailPage() {
     setLoading(true);
     setNotFound(false);
 
-    fetch(`http://localhost:1337/api/rooms?populate=gallery`)
+    fetch(`https://successful-kindness-6438c55093.strapiapp.com/api/rooms?populate=gallery`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data, "APIIII");
@@ -50,7 +50,7 @@ export default function RoomDetailPage() {
             price: item.price,
             content: item.content,
             gallery: item.gallery
-              ? item.gallery.map((img: any) => `http://localhost:1337${img.url}`)
+              ? item.gallery.map((img: any) => `${img.url}`)
               : [],
           });
         } else {

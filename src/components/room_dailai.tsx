@@ -20,7 +20,7 @@ function Room_DAILAI() {
 
 
 useEffect(() => {
-  fetch("http://localhost:1337/api/rooms?populate[avatar]=true&populate[category]=true")
+  fetch("https://successful-kindness-6438c55093.strapiapp.com/api/rooms?populate[avatar]=true&populate[category]=true")
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
@@ -37,7 +37,7 @@ useEffect(() => {
           slug: item.slug,
           price: item.price,
           avatar: item.avatar?.url
-            ? `http://localhost:1337${item.avatar.url}`
+            ? `${item.avatar.url}`
             : "",
         }));
         setRooms(mappedRooms);

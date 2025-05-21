@@ -32,7 +32,7 @@ export default function PostDetailPage() {
     setLoading(true);
     setNotFound(false);
 
-    fetch(`http://localhost:1337/api/articles?populate=gallery`)
+    fetch(`https://successful-kindness-6438c55093.strapiapp.com/api/articles?populate=gallery`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data, "APIIII");
@@ -48,7 +48,7 @@ export default function PostDetailPage() {
             title: item.title,
             content: item.content,
             gallery: item.gallery
-              ? item.gallery.map((img: any) => `http://localhost:1337${img.url}`)
+              ? item.gallery.map((img: any) => `${img.url}`)
               : [],
           });
         } else {

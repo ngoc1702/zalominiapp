@@ -22,7 +22,7 @@ function NewsPage() {
     const fetchPosts = async () => {
       try {
         const res = await fetch(
-          `http://localhost:1337/api/articles?populate[avatar]=true&pagination[page]=${page}&pagination[pageSize]=${PAGE_SIZE}`
+          `https://successful-kindness-6438c55093.strapiapp.com/api/articles?populate[avatar]=true&pagination[page]=${page}&pagination[pageSize]=${PAGE_SIZE}`
         );
         const data = await res.json();
 
@@ -33,7 +33,7 @@ function NewsPage() {
             title: item.title,
             slug: item.slug,
            avatar: item.avatar?.url
-            ? `http://localhost:1337${item.avatar.url}`
+            ? `${item.avatar.url}`
             : "",
           }));
 
