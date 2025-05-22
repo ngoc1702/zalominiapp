@@ -16,11 +16,12 @@ interface RoomItem {
   title: string;
   content: string;
   gallery: string[];
+
 }
 
 export default function PostDetailPage() {
   const location = useLocation();
-  const [room, setRoom] = useState<RoomItem | null>(null);
+  const [post, setPost] = useState<RoomItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
@@ -42,7 +43,7 @@ export default function PostDetailPage() {
             (roomItem: any) => roomItem.slug === slug
           ) || data.data[0];
 
-          setRoom({
+          setPost({
             id: item.id,
             slug: item.slug,
             title: item.title,
@@ -50,6 +51,7 @@ export default function PostDetailPage() {
             gallery: item.gallery
               ? item.gallery.map((img: any) => `${img.url}`)
               : [],
+           
           });
         } else {
           setNotFound(true);
@@ -78,11 +80,11 @@ export default function PostDetailPage() {
     );
 
   return (
-    <Page className="pt-28 pb-20 px-3 bg-white dark:bg-black">
+    <Page className="pt-28 pb-24 px-3 bg-white dark:bg-black">
       <Text.Title className="mb-2 uppercase">
-        <strong>{room?.title}</strong>
+        <strong>{post?.title}</strong>
       </Text.Title>
-       {room?.gallery && room.gallery.length > 0 && (
+       {post?.gallery && post.gallery.length > 0 && (
   <Swiper
     modules={[FreeMode, Autoplay, Navigation, Pagination]}
     slidesPerView={1}
@@ -95,12 +97,12 @@ export default function PostDetailPage() {
     className="room-swiper"
     style={{ width: "100%", maxWidth: "600px" }}
   >
-    {room.gallery.map((url, idx) => (
+    {post.gallery.map((url, idx) => (
       <SwiperSlide key={idx}>
         <img
-          className="h-[30vh] w-full rounded object-cover"
-          src={url.startsWith("http") ? url : `http://localhost:1337${url}`}
-          alt={`${room.title || "image"} - ${idx + 1}`}
+          className="h-[25vh] w-full rounded object-cover"
+          src={url.startsWith("http") ? url : `${url}`}
+          alt={`${post.title || "image"} - ${idx + 1}`}
           style={{ display: "block", marginBottom: 8 }}
         />
       </SwiperSlide>
@@ -109,7 +111,7 @@ export default function PostDetailPage() {
 )}
      
    
-      <ReactMarkdown>{room?.content}</ReactMarkdown>
+      <ReactMarkdown>{post?.content}</ReactMarkdown>
     </Page>
   );
 }

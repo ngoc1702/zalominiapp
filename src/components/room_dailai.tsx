@@ -53,7 +53,7 @@ useEffect(() => {
     <>
       <Text.Title size="large">Flamingo Đại Lải</Text.Title>
       <div className="max-w-full overflow-hidden">
-        <Swiper slidesPerView={2.4} spaceBetween={16} freeMode={true} modules={[FreeMode]}>
+        <Swiper slidesPerView={2.1} spaceBetween={16} freeMode={true} modules={[FreeMode]}>
           {rooms.map((room) => (
             <SwiperSlide key={room.id}>
               <div

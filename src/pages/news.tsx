@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Text, Page ,Icon, useNavigate} from "zmp-ui";
-
+import { Text, Page, Icon, useNavigate } from "zmp-ui";
 
 interface Post {
   id: number;
   category: string;
   slug: string;
   title: string;
-  avatar: string;
+  avatar: string;  
+  createdAt:string;
+  views: number;
+
 }
 
 const PAGE_SIZE = 10;
@@ -16,7 +18,7 @@ function NewsPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(1);
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -32,9 +34,10 @@ function NewsPage() {
             category: item.category || "",
             title: item.title,
             slug: item.slug,
-           avatar: item.avatar?.url
-            ? `${item.avatar.url}`
-            : "",
+            avatar: item.avatar?.url ? `${item.avatar.url}` : "",
+            createdAt:item.createdAt,
+            views: item.views || 0,
+
           }));
 
           setPosts(mappedPosts);
@@ -73,7 +76,6 @@ function NewsPage() {
             key={post.id}
             className="bg-gray-100 rounded-lg cursor-pointer"
             onClick={() => navigate(`/posts/${post.slug}`)}
-
           >
             <img
               className="h-[18vh] rounded w-full object-cover object-center"
@@ -84,6 +86,10 @@ function NewsPage() {
               <h2 className="text-sm text-[#16462F] font-medium title-font mb-[6px] uppercase line-clamp-2">
                 {post.title}
               </h2>
+              <p className="text-[12px] text-gray-500">
+                  {new Date(post.createdAt).toLocaleDateString("en-GB").replace(/\//g, '-')}
+                </p>
+
             </div>
           </div>
         ))}
@@ -94,9 +100,9 @@ function NewsPage() {
         <button
           onClick={handlePrev}
           disabled={page === 1}
-          className="bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
+          className="bg-gray-300 px-1 pb-[2px] rounded disabled:opacity-50"
         >
-         <Icon icon="zi-arrow-left" />
+          <Icon icon="zi-arrow-left" size={14} />
         </button>
         <span className="text-sm">
           Trang {page} / {pageCount}
@@ -104,9 +110,9 @@ function NewsPage() {
         <button
           onClick={handleNext}
           disabled={page === pageCount}
-          className="bg-gray-300 px-3 py-1 rounded disabled:opacity-50"
+          className="bg-gray-300 px-1 pb-[2px] rounded disabled:opacity-50"
         >
-<Icon icon="zi-arrow-right" />
+          <Icon icon="zi-arrow-right" size={14} />
         </button>
       </div>
     </Page>

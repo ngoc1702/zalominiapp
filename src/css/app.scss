@@ -33,3 +33,38 @@
     opacity: var(--swiper-pagination-bullet-opacity, 1);
     background:  #F58220 !important;
 }
+
+h1, h2, h3, h4, h5 {
+  font-weight: 600;
+  margin: 0 0 0.6em 0;
+  line-height: 1.25;
+}
+
+h1 {
+  font-size: 2.5rem;   /* ~40px */
+  letter-spacing: -0.5px;
+}
+
+h2 {
+  font-size: 2rem;     /* ~32px */
+}
+
+h3 {
+  font-size: 1.625rem; /* ~26px */
+}
+
+h4 {
+  font-size: 1.25rem;  /* ~20px */
+}
+
+h5 {
+  font-size: 1rem;     /* ~16px */
+  font-weight: 500;
+}
+
+.custom-sheet {
+  z-index: 9999 !important;
+}
+.bottom-nav {
+  z-index: 1000;
+}

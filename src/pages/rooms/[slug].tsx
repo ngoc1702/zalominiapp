@@ -80,7 +80,7 @@ export default function RoomDetailPage() {
     );
 
   return (
-    <Page className="pt-28 pb-20 px-3 bg-white dark:bg-black">
+    <Page className="pt-28 pb-24 px-3 bg-white dark:bg-black">
       <Text.Title className="mb-2 uppercase">
         <strong>{post?.title}</strong>
       </Text.Title>
@@ -102,8 +102,8 @@ export default function RoomDetailPage() {
     {post.gallery.map((url, idx) => (
       <SwiperSlide key={idx}>
         <img
-          className="h-[30vh] w-full rounded object-cover"
-          src={url.startsWith("http") ? url : `http://localhost:1337${url}`}
+          className="h-[25vh] w-full rounded object-cover"
+          src={url.startsWith("http") ? url : `${url}`}
           alt={`${post.title || "image"} - ${idx + 1}`}
           style={{ display: "block", marginBottom: 8 }}
         />

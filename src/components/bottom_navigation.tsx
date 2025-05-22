@@ -5,7 +5,7 @@ function BottomNavBar() {
   const location = useLocation(); 
 
   return (
-    <BottomNavigation fixed activeKey={location.pathname}>
+    <BottomNavigation fixed activeKey={location.pathname}  className="bottom-nav">
       <BottomNavigation.Item
         key="/"
         icon={<Icon icon="zi-home" />}
