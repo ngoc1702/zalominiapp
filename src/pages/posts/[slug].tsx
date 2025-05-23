@@ -2,7 +2,7 @@ import { useLocation } from "zmp-ui";
 import { useEffect, useState } from "react";
 import { Page, Text } from "zmp-ui";
 import ReactMarkdown from "react-markdown";
-import rehypeRaw from 'rehype-raw';
+import rehypeRaw from "rehype-raw";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Autoplay, Navigation, Pagination } from "swiper/modules";
@@ -17,7 +17,6 @@ interface RoomItem {
   title: string;
   content: string;
   gallery: string[];
-
 }
 
 export default function PostDetailPage() {
@@ -34,15 +33,17 @@ export default function PostDetailPage() {
     setLoading(true);
     setNotFound(false);
 
-    fetch(`https://successful-kindness-6438c55093.strapiapp.com/api/articles?populate=gallery`)
+    fetch(
+      `https://successful-kindness-6438c55093.strapiapp.com/api/articles?populate=gallery`
+    )
       .then((res) => res.json())
       .then((data) => {
         console.log(data, "APIIII");
 
         if (Array.isArray(data.data) && data.data.length > 0) {
-          const item = data.data.find(
-            (roomItem: any) => roomItem.slug === slug
-          ) || data.data[0];
+          const item =
+            data.data.find((roomItem: any) => roomItem.slug === slug) ||
+            data.data[0];
 
           setPost({
             id: item.id,
@@ -52,7 +53,6 @@ export default function PostDetailPage() {
             gallery: item.gallery
               ? item.gallery.map((img: any) => `${img.url}`)
               : [],
-           
           });
         } else {
           setNotFound(true);
@@ -85,35 +85,34 @@ export default function PostDetailPage() {
       <Text.Title className="mb-2 uppercase">
         <strong>{post?.title}</strong>
       </Text.Title>
-       {post?.gallery && post.gallery.length > 0 && (
-  <Swiper
-    modules={[FreeMode, Autoplay, Navigation, Pagination]}
-    slidesPerView={1}
-    spaceBetween={10}
-    loop={true}
-    navigation={true}
-    pagination={{ clickable: true }}
-    autoplay={{ delay: 3000 }}
-    
-    className="room-swiper"
-    style={{ width: "100%", maxWidth: "600px" }}
-  >
-    {post.gallery.map((url, idx) => (
-      <SwiperSlide key={idx}>
-        <img
-          className="h-[25vh] w-full rounded object-cover"
-          src={url.startsWith("http") ? url : `${url}`}
-          alt={`${post.title || "image"} - ${idx + 1}`}
-          style={{ display: "block", marginBottom: 8 }}
-        />
-      </SwiperSlide>
-    ))}
-  </Swiper>
-)}
-     
-   {/* <div dangerouslySetInnerHTML={{ __html: post?.content }} /> */}
+      {post?.gallery && post.gallery.length > 0 && (
+        <Swiper
+          modules={[FreeMode, Autoplay, Navigation, Pagination]}
+          slidesPerView={1}
+          spaceBetween={10}
+          loop={true}
+          navigation={true}
+          pagination={{ clickable: true }}
+          autoplay={{ delay: 3000 }}
+          className="room-swiper"
+          style={{ width: "100%", maxWidth: "600px" }}
+        >
+          {post.gallery.map((url, idx) => (
+            <SwiperSlide key={idx}>
+              <img
+                className="h-[25vh] w-full rounded object-cover"
+                src={url.startsWith("http") ? url : `${url}`}
+                alt={`${post.title || "image"} - ${idx + 1}`}
+                style={{ display: "block", marginBottom: 8 }}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
 
-      <ReactMarkdown className="text-sm">{post?.content}</ReactMarkdown>
+      <div className="text-sm">
+        <ReactMarkdown>{post?.content}</ReactMarkdown>
+      </div>
     </Page>
   );
 }

@@ -33,15 +33,17 @@ export default function RoomDetailPage() {
     setLoading(true);
     setNotFound(false);
 
-    fetch(`https://successful-kindness-6438c55093.strapiapp.com/api/rooms?populate=gallery`)
+    fetch(
+      `https://successful-kindness-6438c55093.strapiapp.com/api/rooms?populate=gallery`
+    )
       .then((res) => res.json())
       .then((data) => {
         console.log(data, "APIIII");
 
         if (Array.isArray(data.data) && data.data.length > 0) {
-          const item = data.data.find(
-            (roomItem: any) => roomItem.slug === slug
-          ) || data.data[0];
+          const item =
+            data.data.find((roomItem: any) => roomItem.slug === slug) ||
+            data.data[0];
 
           setPost({
             id: item.id,
@@ -85,34 +87,33 @@ export default function RoomDetailPage() {
         <strong>{post?.title}</strong>
       </Text.Title>
 
-     
-   {post?.gallery && post.gallery.length > 0 && (
-  <Swiper
-    modules={[FreeMode, Autoplay, Navigation, Pagination]}
-    slidesPerView={1}
-    spaceBetween={10}
-    loop={true}
-    navigation={true}
-    pagination={{ clickable: true }}
-    autoplay={{ delay: 3000 }}
-    
-    className="room-swiper"
-    style={{ width: "100%", maxWidth: "600px" }}
-  >
-    {post.gallery.map((url, idx) => (
-      <SwiperSlide key={idx}>
-        <img
-          className="h-[25vh] w-full rounded object-cover"
-          src={url.startsWith("http") ? url : `${url}`}
-          alt={`${post.title || "image"} - ${idx + 1}`}
-          style={{ display: "block", marginBottom: 8 }}
-        />
-      </SwiperSlide>
-    ))}
-  </Swiper>
-)}
-
-      <ReactMarkdown className="text-sm">{post?.content}</ReactMarkdown>
+      {post?.gallery && post.gallery.length > 0 && (
+        <Swiper
+          modules={[FreeMode, Autoplay, Navigation, Pagination]}
+          slidesPerView={1}
+          spaceBetween={10}
+          loop={true}
+          navigation={true}
+          pagination={{ clickable: true }}
+          autoplay={{ delay: 3000 }}
+          className="room-swiper"
+          style={{ width: "100%", maxWidth: "600px" }}
+        >
+          {post.gallery.map((url, idx) => (
+            <SwiperSlide key={idx}>
+              <img
+                className="h-[25vh] w-full rounded object-cover"
+                src={url.startsWith("http") ? url : `${url}`}
+                alt={`${post.title || "image"} - ${idx + 1}`}
+                style={{ display: "block", marginBottom: 8 }}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
+      <div className="text-sm">
+        <ReactMarkdown className="text-sm">{post?.content}</ReactMarkdown>
+      </div>
     </Page>
   );
 }
