@@ -1,4 +1,4 @@
-import React from "react";
+
 import { Sheet, Button, Box, Icon } from "zmp-ui";
 
 interface MODAL_CHATProps {
@@ -11,7 +11,7 @@ interface MODAL_CHATProps {
 
 function MODAL_CHAT({ visible, onClose, avatar, title, price }: MODAL_CHATProps) {
   return (
-    <Sheet visible={visible} onClose={onClose} autoHeight   className="custom-sheet"
+    <Sheet visible={visible} onClose={onClose} autoHeight   className="custom-sheet "
 
 >
       <Box className="custom-bottom-sheet" flex flexDirection="column" p={4}>
@@ -40,9 +40,11 @@ function MODAL_CHAT({ visible, onClose, avatar, title, price }: MODAL_CHATProps)
           <p style={{ color: "#F58220", fontWeight: "semi-bold", fontSize: 16 }}>{price}</p>
         </Box>
 </div>
-        <Button fullWidth className="bg-[#F58220]" onClick={onClose}>
+<a href="https://zalo.me/0396767186">
+        <Button fullWidth className="bg-[#F58220]">
            <Icon icon="zi-chat" className="pb-5 pr-1" size={16} /> Liên hệ
         </Button>
+        </a>
       </Box>
     </Sheet>
   );

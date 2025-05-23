@@ -50,15 +50,15 @@ function Room_CATBA() {
 
   const handleIconClick = (room: RoomItem) => {
     console.log("Clicked:", room.title);
-    setSelectedRoom(room); // ⭐️ lưu lại room
-    setShowModal(true); // mở modal
+    setSelectedRoom(room); 
+    setShowModal(true); 
   };
 
   return (
     <>
       <Text.Title size="large">Flamingo Cát Bà</Text.Title>
-      <div className="max-w-full overflow-hidden">
-        <Swiper slidesPerView={2.1} spaceBetween={16} freeMode={true} modules={[FreeMode]}>
+      <div className="max-w-full ">
+        <Swiper slidesPerView={2.2} spaceBetween={16} freeMode={true} modules={[FreeMode]}>
           {rooms.map((room) => (
             <SwiperSlide key={room.id}>
               <div className="bg-gray-100 rounded-lg cursor-pointer">
@@ -69,7 +69,7 @@ function Room_CATBA() {
                   onClick={() => navigate(`/rooms/${room.slug}`)}
                 />
                 <div className="p-2">
-                  <h2 className="text-sm text-[#16462F] font-medium title-font mb-[6px] uppercase line-clamp-2">
+                  <h2 onClick={() => navigate(`/rooms/${room.slug}`)} className="text-sm text-[#16462F] font-medium title-font mb-[6px] uppercase line-clamp-2">
                     {room.title}
                   </h2>
                   <div className="flex justify-between items-center mb-1">
@@ -93,7 +93,7 @@ function Room_CATBA() {
         </Swiper>
       </div>
 
-      {/* ⭐️ Modal có dữ liệu selectedRoom */}
+
       {selectedRoom && (
         <MODAL_CHAT
           visible={showModal}

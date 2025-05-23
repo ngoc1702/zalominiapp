@@ -2,6 +2,7 @@ import { useLocation } from "zmp-ui";
 import { useEffect, useState } from "react";
 import { Page, Text } from "zmp-ui";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from 'rehype-raw';
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Autoplay, Navigation, Pagination } from "swiper/modules";
@@ -80,7 +81,7 @@ export default function PostDetailPage() {
     );
 
   return (
-    <Page className="pt-28 pb-24 px-3 bg-white dark:bg-black">
+    <Page className="pt-28 pb-[102px] px-3 bg-white dark:bg-black">
       <Text.Title className="mb-2 uppercase">
         <strong>{post?.title}</strong>
       </Text.Title>
@@ -110,8 +111,9 @@ export default function PostDetailPage() {
   </Swiper>
 )}
      
-   
-      <ReactMarkdown>{post?.content}</ReactMarkdown>
+   {/* <div dangerouslySetInnerHTML={{ __html: post?.content }} /> */}
+
+      <ReactMarkdown className="text-sm">{post?.content}</ReactMarkdown>
     </Page>
   );
 }

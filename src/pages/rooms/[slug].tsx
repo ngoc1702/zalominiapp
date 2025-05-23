@@ -80,7 +80,7 @@ export default function RoomDetailPage() {
     );
 
   return (
-    <Page className="pt-28 pb-24 px-3 bg-white dark:bg-black">
+    <Page className="pt-28 pb-[102px]  px-3 bg-white dark:bg-black">
       <Text.Title className="mb-2 uppercase">
         <strong>{post?.title}</strong>
       </Text.Title>
@@ -112,7 +112,7 @@ export default function RoomDetailPage() {
   </Swiper>
 )}
 
-      <ReactMarkdown>{post?.content}</ReactMarkdown>
+      <ReactMarkdown className="text-sm">{post?.content}</ReactMarkdown>
     </Page>
   );
 }

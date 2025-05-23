@@ -13,7 +13,7 @@ function BottomNavBar() {
         onClick={() => navigate("/")}
       />
       <BottomNavigation.Item
-        key="/catergories"
+        key="/news"
         icon={<Icon icon="zi-list-1" />}
         label="Cẩm nang"
         onClick={() => navigate("/news")}
