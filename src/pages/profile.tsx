@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Avatar, Page, Text, Button, Icon } from "zmp-ui";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import zmp from "zmp-sdk";
 import LOGO from "@/image/cropped-logo-tron-ADSDIGI.png";
 import QR_CODE from "@/image/download.png";
@@ -65,24 +67,45 @@ export default function ProfilePage() {
 
   const handleDownloadQR = () => {
     const link = document.createElement("a");
-    link.href = "/path/to/zalo-miniapp-qr.png"; // ← THAY BẰNG ĐƯỜNG DẪN ĐÚNG
+    link.href = "/path/to/zalo-miniapp-qr.png"; 
     link.download = "zalo-miniapp-qr.png";
     link.click();
+     toast.success("Đã sao chép link Zalo Mini App!");
   };
 
 const handleShareQR = () => {
   setShowSharePopup(true);
 };
 
-const handleCopyLink = async () => {
+
+const handleCopyZaloMiniAppLink = () => {
+  const appId = '4399971435693795957';
+  const appParams = 'ref=share';
+  const link = `https://zalo.me/app/${appId}?appParams=${encodeURIComponent(appParams)}`;
+
   try {
-    await navigator.clipboard.writeText(window.location.href);
-    alert("Đã sao chép đường dẫn!");
-  } catch {
-    alert("Không thể sao chép. Vui lòng thử lại.");
+    const textArea = document.createElement("textarea");
+    textArea.value = link;
+    textArea.style.position = "fixed";
+    textArea.style.opacity = "0"; // Ẩn textarea
+    textArea.style.pointerEvents = "none";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    const successful = document.execCommand("copy");
+    document.body.removeChild(textArea);
+
+    if (successful) {
+      toast.success("Đã sao chép link Zalo Mini App!");
+    } else {
+      throw new Error("Fallback execCommand copy failed");
+    }
+  } catch (error) {
+    console.error("Lỗi sao chép:", error);
+    toast.error("Không thể sao chép. Thiết bị không hỗ trợ.");
   }
 };
-
 
   if (loading)
     return (
@@ -157,7 +180,7 @@ const handleCopyLink = async () => {
       {/* Nút hành động */}
       <div className="grid grid-cols-2 gap-3">
         <Button 
-          onClick={handleCopyLink}
+          onClick={handleCopyZaloMiniAppLink}
           className="bg-white border border-solid border-orange-500 text-orange-500 font-semibold py-2 "
         >
           <Icon icon="zi-copy" size={16} className="mr-1" />

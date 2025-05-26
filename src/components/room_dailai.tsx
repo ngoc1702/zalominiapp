@@ -18,8 +18,7 @@ interface RoomItem {
 function Room_DAILAI() {
   const [rooms, setRooms] = useState<RoomItem[]>([]);
    const [showModal, setShowModal] = useState(false);
-   const [selectedRoom, setSelectedRoom] = useState<RoomItem | null>(null); // ⭐️
- 
+   const [selectedRoom, setSelectedRoom] = useState<RoomItem | null>(null); 
    const navigate = useNavigate();
  
    useEffect(() => {

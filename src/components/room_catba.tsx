@@ -22,9 +22,13 @@ function Room_CATBA() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("https://successful-kindness-6438c55093.strapiapp.com/api/rooms?populate[avatar]=true&populate[category]=true")
+    fetch("https://successful-kindness-6438c55093.strapiapp.com/api/rooms?populate[avatar]=true&populate[category]=true"
+      // "https://successful-kindness-6438c55093.strapiapp.com/api/rooms?populate[avatar]=true&populate[category]=true"
+    )
       .then((res) => res.json())
       .then((data) => {
+        console.log(data, "PPPPPPPP");
+        
         if (Array.isArray(data.data)) {
           const filteredRooms = data.data.filter(
             (item: any) => item.category && item.category.name === "cat-ba"

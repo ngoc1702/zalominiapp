@@ -111,9 +111,9 @@ export default function RoomDetailPage() {
           ))}
         </Swiper>
       )}
-      <div className="text-sm">
+    
         <ReactMarkdown className="text-sm">{post?.content}</ReactMarkdown>
-      </div>
+      
     </Page>
   );
 }

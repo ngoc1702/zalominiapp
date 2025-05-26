@@ -110,9 +110,8 @@ export default function PostDetailPage() {
         </Swiper>
       )}
 
-      <div className="text-sm">
-        <ReactMarkdown>{post?.content}</ReactMarkdown>
-      </div>
+        <ReactMarkdown className="text-sm">{post?.content}</ReactMarkdown>
+
     </Page>
   );
 }
