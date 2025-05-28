@@ -15,23 +15,23 @@
 
 .zaui-bottom-navigation-item-active .zaui-bottom-navigation-item-icon,
 .zaui-bottom-navigation-item-active .zaui-bottom-navigation-item-label {
-  color: #F58220 !important;
+  color: #CE2127 !important;
 }
 
 .swiper-button-next:after, .swiper-rtl .swiper-button-prev:after {
     content: 'next';
     font-size: 24px !important;
-    color: #F58220 !important;
+    color: #CE2127 !important;
 }
 .swiper-button-prev:after, .swiper-rtl .swiper-button-next:after {
     content: 'prev';
-    color: #F58220 !important;
+    color: #CE2127 !important;
      font-size: 24px !important;
 }
 
 .swiper-pagination-bullet-active {
     opacity: var(--swiper-pagination-bullet-opacity, 1);
-    background:  #F58220 !important;
+    background:  #CE2127 !important;
 }
 
 h1, h2, h3, h4, h5 {
@@ -60,6 +60,11 @@ h4 {
 h5 {
   font-size: 0.75rem;     /* ~16px */
   font-weight: 500;
+}
+
+.li {
+    list-style-type: disc;
+    margin: 4px 20px !important;
 }
 
 .zaui-sheet-content.zaui-sheet-content-hug-content {

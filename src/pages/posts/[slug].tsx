@@ -14,6 +14,7 @@ import "swiper/css/pagination";
 interface RoomItem {
   id: number;
   slug: string;
+  avatar: string;
   title: string;
   content: string;
   gallery: string[];
@@ -34,7 +35,7 @@ export default function PostDetailPage() {
     setNotFound(false);
 
     fetch(
-      `https://successful-kindness-6438c55093.strapiapp.com/api/articles?populate=gallery`
+      `https://natural-chickens-1b51cc007f.strapiapp.com/api/articles?populate[avatar]=true`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -49,6 +50,7 @@ export default function PostDetailPage() {
             id: item.id,
             slug: item.slug,
             title: item.title,
+            avatar: item.avatar?.url ? `${item.avatar.url}` : "",
             content: item.content,
             gallery: item.gallery
               ? item.gallery.map((img: any) => `${img.url}`)
@@ -85,7 +87,15 @@ export default function PostDetailPage() {
       <Text.Title className="mb-2 uppercase">
         <strong>{post?.title}</strong>
       </Text.Title>
-      {post?.gallery && post.gallery.length > 0 && (
+      <img
+                className="h-[25vh] w-full rounded object-cover"
+                src={post?.avatar}
+                alt={post?.title}
+                style={{ display: "block", marginBottom: 8 }}
+              />
+      
+        <ReactMarkdown className="text-sm">{post?.content}</ReactMarkdown>
+        {/* {post?.gallery && post.gallery.length > 0 && (
         <Swiper
           modules={[FreeMode, Autoplay, Navigation, Pagination]}
           slidesPerView={1}
@@ -108,9 +118,8 @@ export default function PostDetailPage() {
             </SwiperSlide>
           ))}
         </Swiper>
-      )}
+      )} */}
 
-        <ReactMarkdown className="text-sm">{post?.content}</ReactMarkdown>
 
     </Page>
   );

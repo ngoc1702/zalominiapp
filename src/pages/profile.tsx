@@ -13,6 +13,20 @@ interface UserProfile {
   phone:string;
   avatar: string;
 }
+declare global {
+  interface Window {
+    zaloMini?: {
+      shareToFriend: (params: {
+        type: 'miniapp';
+        appId: string;
+        appParams?: string;
+        success?: () => void;
+        fail?: (err: any) => void;
+      }) => void;
+    };
+  }
+}
+
 
 export default function ProfilePage() {
   const [user, setUser] = useState<UserProfile | null>(null);
@@ -79,9 +93,7 @@ const handleShareQR = () => {
 
 
 const handleCopyZaloMiniAppLink = () => {
-  const appId = '4399971435693795957';
-  const appParams = 'ref=share';
-  const link = `https://zalo.me/app/${appId}?appParams=${encodeURIComponent(appParams)}`;
+  const link = 'https://zalo.me/s/1872406626404526216/?utm_source=zalo-qr';
 
   try {
     const textArea = document.createElement("textarea");
@@ -97,15 +109,35 @@ const handleCopyZaloMiniAppLink = () => {
     document.body.removeChild(textArea);
 
     if (successful) {
-      toast.success("Đã sao chép link Zalo Mini App!");
+      toast.success("Đã sao chép link Zalo thành công!");
     } else {
-      throw new Error("Fallback execCommand copy failed");
+      throw new Error("Không thể sao chép");
     }
   } catch (error) {
     console.error("Lỗi sao chép:", error);
     toast.error("Không thể sao chép. Thiết bị không hỗ trợ.");
   }
 };
+
+ const handleShareToZalo = () => {
+    setShowSharePopup(false);
+
+    if (window.zaloMini?.shareToFriend) {
+      window.zaloMini.shareToFriend({
+        type: 'miniapp',
+        appId: '4399971435693795957', // Thay bằng AppID của bạn
+        appParams: 'ref=share',        // Tùy chỉnh tham số nếu cần
+        success: () => {
+          console.log("✅ Đã chia sẻ thành công!");
+        },
+        fail: (err) => {
+          console.error("❌ Lỗi chia sẻ:", err);
+        }
+      });
+    } else {
+      alert("Tính năng chỉ hoạt động trong Zalo Mini App.");
+    }
+  };
 
   if (loading)
     return (
@@ -122,7 +154,7 @@ const handleCopyZaloMiniAppLink = () => {
 
   return (
     <Page className="flex flex-col pt-28 pb-20 px-3 space-y-6 bg-white dark:bg-black">
-      <div className="flex gap-4 items-center">
+      {/* <div className="flex gap-4 items-center">
         <Avatar size={48} src={user.avatar}>
           {user.name.charAt(0)}
         </Avatar>
@@ -130,7 +162,7 @@ const handleCopyZaloMiniAppLink = () => {
         <Text.Title>{user.name}</Text.Title>
         <p className="text-sm font-bold">{user.phone}</p>
         </div>
-      </div>
+      </div> */}
 
       {/* QR Mini App */}
       <div className="text-center border border-gray-200 dark:border-gray-700 p-4 rounded-lg">
@@ -181,21 +213,19 @@ const handleCopyZaloMiniAppLink = () => {
       <div className="grid grid-cols-2 gap-3">
         <Button 
           onClick={handleCopyZaloMiniAppLink}
-          className="bg-white border border-solid border-orange-500 text-orange-500 font-semibold py-2 "
+          className="bg-white border border-solid border-red-600 text-red-600 font-semibold py-2 "
         >
           <Icon icon="zi-copy" size={16} className="mr-1" />
           Sao chép link
         </Button>
 
-        <Button
-          onClick={() => {
-            setShowSharePopup(false);
-            window.open("https://zalo.me", "_blank");
-          }}
-          className="bg-orange-500 text-white font-semibold py-2"
-        >
-          Chia sẻ trên Zalo
-        </Button>
+ <Button
+      onClick={handleShareToZalo}
+      className="bg-red-600 text-white font-semibold py-2"
+    >
+      Chia sẻ trên Zalo
+    </Button>
+
       </div>
 
       {/* Nút đóng */}

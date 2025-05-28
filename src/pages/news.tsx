@@ -6,10 +6,9 @@ interface Post {
   category: string;
   slug: string;
   title: string;
-  avatar: string;  
-  createdAt:string;
+  avatar: string;
+  createdAt: string;
   views: number;
-
 }
 
 const PAGE_SIZE = 10;
@@ -24,9 +23,13 @@ function NewsPage() {
     const fetchPosts = async () => {
       try {
         const res = await fetch(
-          `https://successful-kindness-6438c55093.strapiapp.com/api/articles?populate[avatar]=true&pagination[page]=${page}&pagination[pageSize]=${PAGE_SIZE}`
+          // `https://successful-kindness-6438c55093.strapiapp.com/api/articles?populate[avatar]=true&pagination[page]=${page}&pagination[pageSize]=${PAGE_SIZE}`
+          `
+https://natural-chickens-1b51cc007f.strapiapp.com/api/articles?populate[avatar]=true&pagination[page]=${page}&pagination[pageSize]=${PAGE_SIZE}`
         );
         const data = await res.json();
+        console.log(data,"DATA");
+        
 
         if (Array.isArray(data.data)) {
           const mappedPosts = data.data.map((item: any) => ({
@@ -35,9 +38,8 @@ function NewsPage() {
             title: item.title,
             slug: item.slug,
             avatar: item.avatar?.url ? `${item.avatar.url}` : "",
-            createdAt:item.createdAt,
+            createdAt: item.createdAt,
             views: item.views || 0,
-
           }));
 
           setPosts(mappedPosts);
@@ -83,13 +85,14 @@ function NewsPage() {
               alt={post.title}
             />
             <div className="p-2">
-              <h2 className="text-sm text-[#16462F] font-medium title-font mb-[6px] uppercase line-clamp-2">
+              <h2 className="text-sm text-black-600 font-medium title-font mb-[6px] uppercase line-clamp-2">
                 {post.title}
               </h2>
               <p className="text-[12px] text-gray-500">
-                  {new Date(post.createdAt).toLocaleDateString("en-GB").replace(/\//g, '-')}
-                </p>
-
+                {new Date(post.createdAt)
+                  .toLocaleDateString("en-GB")
+                  .replace(/\//g, "-")}
+              </p>
             </div>
           </div>
         ))}
@@ -104,8 +107,9 @@ function NewsPage() {
         >
           <Icon icon="zi-arrow-left" size={14} />
         </button>
-        <span className="text-sm">
-          Trang {page} / {pageCount}
+        <span className="flex ">
+        <span className="px-2 bg-[#CE2127] text-white text-sm rounded">{page}</span>
+         {/* / {pageCount} */}
         </span>
         <button
           onClick={handleNext}

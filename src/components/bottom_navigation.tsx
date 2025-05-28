@@ -15,13 +15,13 @@ function BottomNavBar() {
       <BottomNavigation.Item
         key="/news"
         icon={<Icon icon="zi-list-1" />}
-        label="Cẩm nang"
+        label="Tin tức"
         onClick={() => navigate("/news")}
       />
       <BottomNavigation.Item
         key="/chat"
         icon={<Icon icon="zi-chat" />}
-        label="Tin nhắn"
+        label="Hỗ trợ"
         onClick={() => navigate("/chat")}
       />
       <BottomNavigation.Item

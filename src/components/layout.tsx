@@ -18,10 +18,13 @@ import HomePage from "@/pages/index";
 import NewsPage from "@/pages/news";
 import ChatPage from "@/pages/chat";
 import ProfilePage from "@/pages/profile";
-import RoomDetailPage from "@/pages/rooms/[slug]";
+import GOOGLE_ADS from "@/pages/goggle_ads";
+import RENT_ACCOUNT from "@/pages/rent_account";
+import DESIGN_WEBSITE from "@/pages/design_website";
 import PostDetailPage from "@/pages/posts/[slug]";
 import BottomNavBar from "./bottom_navigation";
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const InnerLayout = () => {
   const location = useLocation();
@@ -37,11 +40,13 @@ const InnerLayout = () => {
 
   const getTitleByPath = (path: string) => {
     if (path === "/") return "Trang chủ";
-    if (path === "/news") return "Cẩm nang";
-    if (path === "/chat") return "Tin nhắn";
+    if (path === "/news") return "Tin tức";
+    if (path === "/chat") return "Hỗ trợ";
     if (path === "/profile") return "Cá nhân";
-    if (path.startsWith("/rooms/")) return "Chi tiết phòng";
-    if (path.startsWith("/posts/")) return "Chi tiết cẩm nang";
+    if (path === "/google_ads") return "Quảng cáo Google Ads";
+    if (path === "/rent_account") return "Thuê tài khoản";
+    if (path === "/design_website") return "Design Website";
+    if (path.startsWith("/posts/")) return "Chi tiết tin tức";
     return "Zalo Mini App";
   };
 
@@ -49,7 +54,7 @@ const InnerLayout = () => {
     <Page>
       <Header
         title={getTitleByPath(location.pathname)}
-        backgroundColor="#F58220"
+        backgroundColor="#CE2127"
         textColor="#fff"
       />
        {loading ? (
@@ -70,9 +75,21 @@ const InnerLayout = () => {
         <Route path="/news" element={<NewsPage />} />
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/rooms/:slug" element={<RoomDetailPage />} />
+        <Route path="/google_ads" element={<GOOGLE_ADS/>} />
+        <Route path="/rent_account" element={<RENT_ACCOUNT/>} />
+        <Route path="/design_website" element={<DESIGN_WEBSITE/>} />
         <Route path="/posts/:slug" element={<PostDetailPage />} />
       </AnimationRoutes>
+        <ToastContainer
+        position="top-center" // hoặc "bottom-center" cho mobile
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <BottomNavBar />
       </>
       )}
