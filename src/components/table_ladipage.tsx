@@ -12,8 +12,8 @@ function TABLE_LADIPAGE() {
         <div className="flex  gap-10 justify-between items-start self-center max-w-full">
           <div className="flex flex-col min-w-[240px] max-md:max-w-full">
             <div className="text-xl  font-medium tracking-tighter max-md:max-w-full max-md:leading-[24px] text-[#141718]">
-              <span className="font-semibold">Bảng Giá Dịch Vụ Thiết Kế</span>{" "}
-              <span className="font-semibold text-[#CD2027]">Ladipage</span>{" "}
+              <span className="font-semibold">Bảng Giá Dịch Vụ Thiết Kế</span>
+              <span className="font-semibold text-[#CD2027]">Ladipage</span>
               {/* <span className="font-semibold text-[#3e795c]">(VNĐ)</span> */}
             </div>
           </div>
@@ -34,7 +34,7 @@ function TABLE_LADIPAGE() {
         </p>
         <p className="mt-2 text-sm  text-center font-semibold">
           Thiết kế website cơ bản theo mẫu có sẵn
-        </p>
+        </p> 
         <ul className="mt-2 text-sm ">
           <div>
             <li className="li">Miễn phí hosting năm đầu</li>
@@ -44,7 +44,7 @@ function TABLE_LADIPAGE() {
             <li className="li">Tối ưu giao diện máy tính</li>
             <li className="li">Tối ưu giao diện điện thoại</li>
             <li className="li">
-              Bảo hành miễn phí{" "}
+              Bảo hành miễn phí
               <span className="text-[#CE2127] font-bold">1</span> năm
             </li>
           </div>
@@ -64,7 +64,7 @@ function TABLE_LADIPAGE() {
         <ul className="mt-2 text-sm ">
           <div>
             <li className="li">
-              Miễn phí tên miềm{" "}
+              Miễn phí tên miền
               <span className="text-red-600 font-bold">.com</span> năm đầu
             </li>
 
@@ -75,7 +75,7 @@ function TABLE_LADIPAGE() {
             <li className="li">Tối ưu giao diện điện thoại</li>
             <li className="li">Hỗ trợ thiết kế logo, banner</li>
             <li className="li">
-              Bảo hành miễn phí{" "}
+              Bảo hành miễn phí
               <span className="text-[#CE2127] font-bold">1</span> năm
             </li>
           </div>
@@ -95,7 +95,7 @@ function TABLE_LADIPAGE() {
         <ul className="mt-2 text-sm ">
           <div>
             <li className="li">
-              Miễn phí tên miềm{" "}
+              Miễn phí tên miền
               <span className="text-red-600 font-bold">.com</span> năm đầu
             </li>
             <li className="li">Băng thông không giới hạn</li>

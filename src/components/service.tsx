@@ -20,9 +20,9 @@ function SERVICE() {
           </button>
         </div>
 
-        <h2 className="text-base text-gray-900 font-medium title-font mb-2">
+        <p className="text-base text-gray-900 font-medium title-font mb-2">
           Dịch vụ thuê chạy quảng cáo
-        </h2>
+        </p>
         <p className="leading-relaxed text-sm">
           Hướng đúng đối tượng mục tiêu, đo lường hiệu quả chi tiết từng chiến
           dịch quảng cáo một cách chi tiết. Tăng cường độ nhận diện thương hiệu
@@ -39,9 +39,9 @@ function SERVICE() {
             Khám phá
           </button>
         </div>
-        <h2 className="text-base text-gray-900 font-medium title-font mb-2">
+        <p className="text-base text-gray-900 font-medium title-font mb-2">
           Dịch vụ thuê tài khoản Invoice
-        </h2>
+        </p>
         <p className="leading-relaxed text-sm">
           Nhận tất cả các sản phẩm sạch, vpcs nhẹ. Phí dịch vụ chỉ từ 1%. Đối
           tác trực tiếp. Hệ thống nạp tiền chủ động. Hỗ trợ khách hàng 24/7.
@@ -57,9 +57,9 @@ function SERVICE() {
             Khám phá
           </button>
         </div>
-        <h2 className="text-base text-gray-900 font-medium title-font mb-2">
+        <p className="text-base text-gray-900 font-medium title-font mb-2">
           Dịch vụ làm Website
-        </h2>
+        </p>
         <p className="leading-relaxed text-sm">
           Website được thiết kế riêng biệt cho từng chiến dịch marketing của
           khách hàng. Giúp tăng trải nghiệm người dùng và làm tăng độ tin cậy

@@ -13,6 +13,7 @@ import {
   ZMPRouter,
 } from "zmp-ui";
 import { AppProps } from "zmp-ui/app";
+import { HeaderTitleProvider, useHeaderTitle } from "./HeaderTitleContext";
 
 import HomePage from "@/pages/index";
 import NewsPage from "@/pages/news";
@@ -38,17 +39,26 @@ const InnerLayout = () => {
     return () => clearTimeout(timer);
   }, [location.pathname]);
 
-  const getTitleByPath = (path: string) => {
-    if (path === "/") return "Trang chủ";
-    if (path === "/news") return "Tin tức";
-    if (path === "/chat") return "Hỗ trợ";
-    if (path === "/profile") return "Cá nhân";
-    if (path === "/google_ads") return "Quảng cáo Google Ads";
-    if (path === "/rent_account") return "Thuê tài khoản";
-    if (path === "/design_website") return "Design Website";
-    if (path.startsWith("/posts/")) return "Chi tiết tin tức";
-    return "Zalo Mini App";
-  };
+ const getTitleByPath = (path: string) => {
+  let title = "Zalo Mini App";
+
+  if (path === "/") title = "Trang chủ";
+  else if (path === "/news") title = "Tin tức";
+  else if (path === "/chat") title = "Hỗ trợ";
+  else if (path === "/profile") title = "Cá nhân";
+  else if (path === "/google_ads") title = "Quảng cáo Google Ads";
+  else if (path === "/rent_account") title = "Thuê tài khoản";
+  else if (path === "/design_website") title = "Thiết kế Website";
+  else if (path.startsWith("/posts/")) {
+    const slug = path.split("/posts/")[1];
+    const postTitle = sessionStorage.getItem(`post-title-${slug}`);
+    title = postTitle || "Chi tiết tin tức";
+  }
+
+  // Giới hạn độ dài tiêu đề tối đa 30 ký tự
+  return title.length > 30 ? title.slice(0, 30) + "..." : title;
+};
+
 
   return (
     <Page>

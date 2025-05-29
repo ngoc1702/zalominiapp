@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
+import { getUserInfo, getPhoneNumber } from "zmp-sdk/apis";
 import { Avatar, Page, Text, Button, Icon } from "zmp-ui";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import zmp from "zmp-sdk";
 import LOGO from "@/image/cropped-logo-tron-ADSDIGI.png";
 import QR_CODE from "@/image/download.png";
 import BG_LABEl from "@/image/bg_label.png";
@@ -10,7 +10,7 @@ import BG_LABEl from "@/image/bg_label.png";
 interface UserProfile {
   id: string;
   name: string;
-  phone:string;
+  phone?:string;
   avatar: string;
 }
 declare global {
@@ -33,51 +33,40 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [showSharePopup, setShowSharePopup] = useState(false);
 
-
   useEffect(() => {
-    async function loadUser() {
-      const zalo = (window as any).ZaloMiniApp;
+  const fetchUser = async () => {
+    try {
+      const [userRes, phoneRes] = await Promise.all([
+        getUserInfo({}),
+        getPhoneNumber({})
+      ]);
 
-      if (!zalo) {
-        console.warn(
-          "ZaloMiniApp SDK không tìm thấy. Dùng dữ liệu giả cho môi trường dev."
-        );
-        setUser({
-          id: "1234567890",
-          name: "Người Dùng Thử",
-          phone:"0396767186",
-          avatar: "https://via.placeholder.com/96",
-        });
-        setLoading(false);
-        return;
-      }
+      const fetchedUser: UserProfile = {
+        id: userRes.userInfo.id,
+        name: userRes.userInfo.name,
+        avatar: userRes.userInfo.avatar,
+        phone: phoneRes.number,
+      };
 
-      try {
-        const authResponse = await zalo.getAuthToken();
-        const accessToken = authResponse.accessToken;
+      console.log("✅ Thông tin người dùng:", {
+        id: fetchedUser.id,
+        name: fetchedUser.name,
+        avatar: fetchedUser.avatar,
+        phone: fetchedUser.phone,
+      });
 
-        const res = await fetch(
-          `https://openapi.zalo.me/v2.0/me?access_token=${accessToken}`
-        );
-        const data = await res.json();
-
-        if (data.error) throw new Error(data.error.message);
-
-        setUser({
-          id: data.id,
-          name: data.name,
-          phone:data.phone,
-          avatar: data.picture,
-        });
-      } catch (error) {
-        console.error("Lấy thông tin user thất bại", error);
-      } finally {
-        setLoading(false);
-      }
+      setUser(fetchedUser);
+    } catch (err) {
+      console.error("❌ Không lấy được thông tin người dùng:", err);
+      toast.error("Bạn cần cấp quyền truy cập thông tin.");
+    } finally {
+      setLoading(false);
     }
+  };
 
-    loadUser();
-  }, []);
+  fetchUser();
+}, []);
+
 
   const handleDownloadQR = () => {
     const link = document.createElement("a");
@@ -154,15 +143,14 @@ const handleCopyZaloMiniAppLink = () => {
 
   return (
     <Page className="flex flex-col pt-28 pb-20 px-3 space-y-6 bg-white dark:bg-black">
-      {/* <div className="flex gap-4 items-center">
-        <Avatar size={48} src={user.avatar}>
-          {user.name.charAt(0)}
-        </Avatar>
-        <div>
-        <Text.Title>{user.name}</Text.Title>
-        <p className="text-sm font-bold">{user.phone}</p>
-        </div>
-      </div> */}
+  <div className="flex gap-4 items-center">
+  <Avatar size={48} src={user?.avatar} />
+  <div>
+    <Text.Title>{user?.name}</Text.Title>
+    <p className="text-sm font-bold">{user?.phone}</p>
+  </div>
+</div>
+
 
       {/* QR Mini App */}
       <div className="text-center border border-gray-200 dark:border-gray-700 p-4 rounded-lg">
@@ -180,7 +168,7 @@ const handleCopyZaloMiniAppLink = () => {
           className="w-48 h-48 mx-auto mb-4 rounded"
         />
 
-        <h3 className="text-lg font-semibold mt-2">ADSDIGI</h3>
+        <p className="text-lg font-semibold mt-2">ADSDIGI</p>
 
         <div className="flex justify-center gap-4 mt-3">
           <Button onClick={handleDownloadQR} type="neutral" variant="secondary" >

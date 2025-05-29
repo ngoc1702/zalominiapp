@@ -10,6 +10,7 @@ import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import RELATED_POST from "@/components/related_post";
 
 interface RoomItem {
   id: number;
@@ -18,6 +19,7 @@ interface RoomItem {
   title: string;
   content: string;
   gallery: string[];
+  createdAt: string;
 }
 
 export default function PostDetailPage() {
@@ -52,6 +54,7 @@ export default function PostDetailPage() {
             title: item.title,
             avatar: item.avatar?.url ? `${item.avatar.url}` : "",
             content: item.content,
+            createdAt: item.createdAt,
             gallery: item.gallery
               ? item.gallery.map((img: any) => `${img.url}`)
               : [],
@@ -87,15 +90,30 @@ export default function PostDetailPage() {
       <Text.Title className="mb-2 uppercase">
         <strong>{post?.title}</strong>
       </Text.Title>
+      <p className="text-sm text-gray-500 mb-2">
+        {new Date(post?.createdAt)
+          .toLocaleString("en-GB", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false, // dùng định dạng 24h
+          })
+          .replace(",", "")}
+      </p>
+
       <img
-                className="h-[25vh] w-full rounded object-cover"
-                src={post?.avatar}
-                alt={post?.title}
-                style={{ display: "block", marginBottom: 8 }}
-              />
-      
-        <ReactMarkdown className="text-sm">{post?.content}</ReactMarkdown>
-        {/* {post?.gallery && post.gallery.length > 0 && (
+        className="h-[25vh] w-full rounded object-contain"
+        src={post?.avatar}
+        alt={post?.title}
+        style={{ display: "block", marginBottom: 8 }}
+      />
+
+      <ReactMarkdown className="text-sm text-justify">
+        {post?.content}
+      </ReactMarkdown>
+      {post?.gallery && post.gallery.length > 0 && (
         <Swiper
           modules={[FreeMode, Autoplay, Navigation, Pagination]}
           slidesPerView={1}
@@ -118,9 +136,9 @@ export default function PostDetailPage() {
             </SwiperSlide>
           ))}
         </Swiper>
-      )} */}
+      )}
 
-
+      <RELATED_POST currentSlug={post?.slug} />
     </Page>
   );
 }
