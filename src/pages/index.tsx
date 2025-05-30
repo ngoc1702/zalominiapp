@@ -47,7 +47,7 @@ function HomePage() {
 
   return (
     <Page
-      className="flex flex-col pt-[104px] pb-[100px] px-3 space-y-6 bg-cover bg-center bg-no-repeat bg-white dark:bg-black h-screen overflow-y-auto"
+      className="flex flex-col pt-28 pb-[100px] px-3 space-y-6 bg-cover bg-center bg-no-repeat bg-white dark:bg-black h-screen overflow-y-auto"
     >
       <BANNER />
       <INTRO />

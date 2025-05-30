@@ -1,4 +1,4 @@
-import { useLocation } from "zmp-ui";
+import { useLocation, Icon } from "zmp-ui";
 import { useEffect, useState } from "react";
 import { Page, Text } from "zmp-ui";
 import ReactMarkdown from "react-markdown";
@@ -41,8 +41,6 @@ export default function PostDetailPage() {
     )
       .then((res) => res.json())
       .then((data) => {
-        console.log(data, "APIIII");
-
         if (Array.isArray(data.data) && data.data.length > 0) {
           const item =
             data.data.find((roomItem: any) => roomItem.slug === slug) ||
@@ -85,12 +83,15 @@ export default function PostDetailPage() {
       </Page>
     );
 
+  // 👇 Đây là URL đầy đủ của bài viết hiện tại
+  const shareUrl = typeof window !== "undefined" ? window.location.href : "";
+
   return (
     <Page className="pt-28 pb-[102px] px-3 bg-white dark:bg-black">
       <Text.Title className="mb-2 uppercase">
         <strong>{post?.title}</strong>
       </Text.Title>
-      <p className="text-sm text-gray-500 mb-2">
+      <p className="text-sm text-gray-500 mb-[6px]">
         {new Date(post?.createdAt)
           .toLocaleString("en-GB", {
             day: "2-digit",
@@ -98,7 +99,7 @@ export default function PostDetailPage() {
             year: "numeric",
             hour: "2-digit",
             minute: "2-digit",
-            hour12: false, // dùng định dạng 24h
+            hour12: false,
           })
           .replace(",", "")}
       </p>
@@ -110,9 +111,10 @@ export default function PostDetailPage() {
         style={{ display: "block", marginBottom: 8 }}
       />
 
-      <ReactMarkdown className="text-sm text-justify">
+      <ReactMarkdown className="text-sm text-justify" rehypePlugins={[rehypeRaw]}>
         {post?.content}
       </ReactMarkdown>
+
       {post?.gallery && post.gallery.length > 0 && (
         <Swiper
           modules={[FreeMode, Autoplay, Navigation, Pagination]}
@@ -137,6 +139,26 @@ export default function PostDetailPage() {
           ))}
         </Swiper>
       )}
+
+      {/* Chia sẻ & Liên hệ */}
+      <div className="mt-6 grid grid-cols-2 items-center justify-center gap-4 py-2 border-t border-b border-1 border-black-700">
+        <a
+          href={`https://zalo.me/share?url=${encodeURIComponent(shareUrl)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm gap-1 flex justify-center items-center text-red-600"
+        >
+          <Icon icon="zi-share" size={14} /> Chia sẻ
+        </a>
+        <a
+          href="https://zalo.me/0396767186"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm gap-1 flex justify-center items-center text-red-600"
+        >
+          <Icon icon="zi-chat" size={14} /> Liên hệ
+        </a>
+      </div>
 
       <RELATED_POST currentSlug={post?.slug} />
     </Page>

@@ -45,7 +45,7 @@ function RELATED_POST({ currentSlug }: Props) {
   }, [currentSlug]);
 
   return (
-    <div className="mt-10">
+    <div className="mt-6">
       <Text.Title size="large">Tin tức liên quan</Text.Title>
       <div className="mt-4 space-y-4">
         {posts.map((post) => (

@@ -13,7 +13,6 @@ import {
   ZMPRouter,
 } from "zmp-ui";
 import { AppProps } from "zmp-ui/app";
-import { HeaderTitleProvider, useHeaderTitle } from "./HeaderTitleContext";
 
 import HomePage from "@/pages/index";
 import NewsPage from "@/pages/news";
@@ -56,7 +55,7 @@ const InnerLayout = () => {
   }
 
   // Giới hạn độ dài tiêu đề tối đa 30 ký tự
-  return title.length > 30 ? title.slice(0, 30) + "..." : title;
+  return title.length > 28 ? title.slice(0, 28) + "..." : title;
 };
 
 
@@ -80,7 +79,7 @@ const InnerLayout = () => {
         </div>
       ) : (
         <>
-      <AnimationRoutes>
+      <AnimationRoutes >
         <Route path="/" element={<HomePage />} />
         <Route path="/news" element={<NewsPage />} />
         <Route path="/chat" element={<ChatPage />} />
