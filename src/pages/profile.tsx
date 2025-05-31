@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getUserInfo, getPhoneNumber, downloadFile , saveImageToGallery  } from "zmp-sdk/apis";
+import { getUserInfo, getPhoneNumber, openShareSheet  , saveImageToGallery, showToast   } from "zmp-sdk/apis";
 import { Avatar, Page, Text, Button, Icon } from "zmp-ui";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -66,14 +66,18 @@ export default function ProfilePage() {
 const handleDownloadQR = async () => {
   try {
     await saveImageToGallery({
-      imageUrl: "https://adsdigi.com/wp-content/uploads/2025/03/a-11.png",
+      imageUrl: "https://adsdigi.com/wp-content/uploads/2025/05/zalo-miniapp-qr.png",
     });
 
-    toast.success("Ảnh đã được lưu vào thư viện!");
+    await showToast({
+      message: "Ảnh đã được lưu vào thư viện!",
+    });
     console.log("✅ Lưu ảnh thành công!");
   } catch (error) {
     console.error("❌ Lỗi lưu ảnh:", error);
-    toast.error("Không thể lưu ảnh vào thiết bị.");
+    await showToast({
+      message: "Không thể lưu ảnh vào thiết bị.",
+    });
   }
 };
 
@@ -82,51 +86,55 @@ const handleDownloadQR = async () => {
     setShowSharePopup(true);
   };
 
-  const handleCopyZaloMiniAppLink = () => {
-    const link = "https://zalo.me/s/1872406626404526216/?utm_source=zalo-qr";
-    try {
-      const textArea = document.createElement("textarea");
-      textArea.value = link;
-      textArea.style.position = "fixed";
-      textArea.style.opacity = "0";
-      textArea.style.pointerEvents = "none";
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
+const handleCopyZaloMiniAppLink = () => {
+  const link = "https://zalo.me/s/1872406626404526216/?utm_source=zalo-qr";
+  try {
+    const textArea = document.createElement("textarea");
+    textArea.value = link;
+    textArea.style.position = "fixed";
+    textArea.style.opacity = "0";
+    textArea.style.pointerEvents = "none";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
 
-      const successful = document.execCommand("copy");
-      document.body.removeChild(textArea);
+    const successful = document.execCommand("copy");
+    document.body.removeChild(textArea);
 
-      if (successful) {
-        toast.success("Đã sao chép link Zalo thành công!");
-      } else {
-        throw new Error("Không thể sao chép");
-      }
-    } catch (error) {
-      console.error("Lỗi sao chép:", error);
-      toast.error("Không thể sao chép. Thiết bị không hỗ trợ.");
-    }
-  };
-
-  const handleShareToZalo = () => {
-    setShowSharePopup(false);
-
-    if (window.zaloMini?.shareToFriend) {
-      window.zaloMini.shareToFriend({
-        type: "miniapp",
-        appId: "4399971435693795957",
-        appParams: "ref=share",
-        success: () => {
-          console.log("✅ Đã chia sẻ thành công!");
-        },
-        fail: (err) => {
-          console.error("❌ Lỗi chia sẻ:", err);
-        },
+    if (successful) {
+      showToast({
+        message: "Đã sao chép link Zalo thành công!",
       });
     } else {
-      alert("Tính năng chỉ hoạt động trong Zalo Mini App.");
+      throw new Error("Không thể sao chép");
     }
-  };
+  } catch (error) {
+    console.error("Lỗi sao chép:", error);
+    showToast({
+      message: "Không thể sao chép. Thiết bị không hỗ trợ.",
+    });
+  }
+};
+
+
+const handleShareToZalo = async () => {
+  try {
+    const data = await openShareSheet({
+      type: "link",
+      data: {
+        link: "https://zalo.me/s/1872406626404526216/?utm_source=zalo-qr",
+      },
+    });
+
+    console.log("Chia sẻ thành công:", data);
+      showToast({
+        message: "Chia sẻ thành công",
+      });
+  } catch (error) {
+    console.error("Lỗi chia sẻ:", error);
+  }
+};
+
 
   if (loading)
     return (

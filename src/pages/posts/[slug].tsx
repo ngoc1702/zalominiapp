@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Page, Text } from "zmp-ui";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
-
+import {  openShareSheet, showToast   } from "zmp-sdk/apis";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Autoplay, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
@@ -83,8 +83,35 @@ export default function PostDetailPage() {
       </Page>
     );
 
-  // 👇 Đây là URL đầy đủ của bài viết hiện tại
-  const shareUrl = typeof window !== "undefined" ? window.location.href : "";
+const handleSharePost = async () => {
+  try {
+    const currentUrl = typeof window !== "undefined" ? window.location.href : "";
+     console.log("currentUrl",currentUrl);
+     
+    if (!currentUrl) {
+      showToast({ message: "Không lấy được URL hiện tại" });
+      return;
+    }
+
+    const data = await openShareSheet({
+      type: "link",
+      data: {
+        link: currentUrl,
+      },
+    });
+
+    console.log("Chia sẻ thành công:", data);
+    showToast({
+      message: "Chia sẻ thành công",
+    });
+  } catch (error) {
+    console.error("Lỗi chia sẻ:", error);
+    showToast({
+      message: "Lỗi chia sẻ, thử lại sau",
+    });
+  }
+};
+
 
   return (
     <Page className="pt-28 pb-[102px] px-3 bg-white dark:bg-black">
@@ -142,14 +169,16 @@ export default function PostDetailPage() {
 
       {/* Chia sẻ & Liên hệ */}
       <div className="mt-6 grid grid-cols-2 items-center justify-center gap-4 py-2 border-t border-b border-1 border-black-700">
+       <button>
         <a
-          href={`https://zalo.me/share?url=${encodeURIComponent(shareUrl)}`}
+          onClick={handleSharePost}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm gap-1 flex justify-center items-center text-red-600"
+          className="text-sm gap-1 flex justify-center items-center text-red-600 pointer"
         >
           <Icon icon="zi-share" size={14} /> Chia sẻ
         </a>
+        </button>
         <a
           href="https://zalo.me/0396767186"
           target="_blank"
