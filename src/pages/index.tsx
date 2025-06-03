@@ -1,5 +1,6 @@
 import { Page } from "zmp-ui";
-import { getSetting, authorize, openPermissionSetting } from "zmp-sdk/apis";
+import { getSetting, authorize, openPermissionSetting,   } from "zmp-sdk/apis";
+
 import { useEffect } from "react";
 import BANNER from "@/components/banner";
 import INTRO from "@/components/intro";
@@ -8,6 +9,7 @@ import SERVICE from "@/components/service";
 function HomePage() {
   useEffect(() => {
     checkPermissions();
+   
   }, []);
 
   const checkPermissions = async () => {
@@ -25,7 +27,7 @@ function HomePage() {
       if (missingScopes.length > 0) {
         // Bước 2: Xin quyền còn thiếu
         const result = await authorize({
-          scopes: missingScopes as any, // 👈 ép kiểu tại đây
+          scopes: missingScopes as any,
         });
 
         if (
@@ -44,6 +46,7 @@ function HomePage() {
       }
     }
   };
+
 
   return (
     <Page

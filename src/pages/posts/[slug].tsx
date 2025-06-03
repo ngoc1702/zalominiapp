@@ -1,9 +1,8 @@
-import { useLocation, Icon } from "zmp-ui";
 import { useEffect, useState } from "react";
-import { Page, Text } from "zmp-ui";
+import { Page, Text, Icon } from "zmp-ui";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
-import {  openShareSheet, showToast   } from "zmp-sdk/apis";
+import { openPostFeed, showToast } from "zmp-sdk/apis";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Autoplay, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
@@ -11,8 +10,9 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import RELATED_POST from "@/components/related_post";
+import { useLocation } from "zmp-ui";
 
-interface RoomItem {
+interface PostItem {
   id: number;
   slug: string;
   avatar: string;
@@ -24,7 +24,7 @@ interface RoomItem {
 
 export default function PostDetailPage() {
   const location = useLocation();
-  const [post, setPost] = useState<RoomItem | null>(null);
+  const [post, setPost] = useState<PostItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
@@ -37,26 +37,28 @@ export default function PostDetailPage() {
     setNotFound(false);
 
     fetch(
-      `https://natural-chickens-1b51cc007f.strapiapp.com/api/articles?populate[avatar]=true`
+      `https://natural-chickens-1b51cc007f.strapiapp.com/api/articles?populate[avatar]=true&populate[gallery]=true`
     )
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data.data) && data.data.length > 0) {
           const item =
             data.data.find((roomItem: any) => roomItem.slug === slug) ||
-            data.data[0];
+            data.data.find((roomItem: any) => String(roomItem.id) === slug); // Fix lỗi kiểu
 
-          setPost({
-            id: item.id,
-            slug: item.slug,
-            title: item.title,
-            avatar: item.avatar?.url ? `${item.avatar.url}` : "",
-            content: item.content,
-            createdAt: item.createdAt,
-            gallery: item.gallery
-              ? item.gallery.map((img: any) => `${img.url}`)
-              : [],
-          });
+          if (item) {
+            setPost({
+              id: item.id,
+              slug: item.slug,
+              title: item.title,
+              avatar: item.avatar?.url || "",
+              content: item.content,
+              createdAt: item.createdAt,
+              gallery: item.gallery?.map((img: any) => img.url) || [],
+            });
+          } else {
+            setNotFound(true);
+          }
         } else {
           setNotFound(true);
         }
@@ -70,48 +72,64 @@ export default function PostDetailPage() {
       });
   }, [slug]);
 
-  if (loading)
+const handleSharePost = async () => {
+  try {
+    const currentUrl =
+      typeof window !== "undefined"
+        ? window.location.origin + window.location.pathname
+        : "";
+
+    if (!currentUrl || !post) {
+      showToast({ message: "Không thể chia sẻ bài viết" });
+      return;
+    }
+
+    const title = post.title || "Bài viết";
+    const thumb = post.avatar || "https://via.placeholder.com/300x200?text=No+Image";
+    const rawDescription = post.content
+      ? post.content.replace(/<[^>]*>?/gm, "")
+      : "";
+    const description = rawDescription.slice(0, 50) || "Xem chi tiết bài viết";
+ console.log("Dữ liệu chia sẻ:", { currentUrl, title, thumb, description });
+    const { status, shareType, numberOfUser } = await openPostFeed({
+      type: "link",
+      data: {
+        link: currentUrl,
+        title,
+        thumb,
+        description,
+      },
+    });
+
+    if (String(status) === "success") {
+      console.log("Chia sẻ thành công:", { shareType, numberOfUser });
+      showToast({ message: "Chia sẻ thành công!" });
+    } else {
+      showToast({ message: "Chia sẻ thất bại" });
+    }
+  } catch (error) {
+    console.error("Lỗi chia sẻ:", error);
+    showToast({ message: "Lỗi chia sẻ, thử lại sau" });
+  }
+};
+
+
+
+  if (loading) {
     return (
       <Page>
         <Text>Đang tải...</Text>
       </Page>
     );
-  if (notFound)
+  }
+
+  if (notFound) {
     return (
       <Page>
-        <Text>Không tìm thấy phòng</Text>
+        <Text>Không tìm thấy bài viết</Text>
       </Page>
     );
-
-const handleSharePost = async () => {
-  try {
-    const currentUrl = typeof window !== "undefined" ? window.location.href : "";
-     console.log("currentUrl",currentUrl);
-     
-    if (!currentUrl) {
-      showToast({ message: "Không lấy được URL hiện tại" });
-      return;
-    }
-
-    const data = await openShareSheet({
-      type: "link",
-      data: {
-        link: currentUrl,
-      },
-    });
-
-    console.log("Chia sẻ thành công:", data);
-    showToast({
-      message: "Chia sẻ thành công",
-    });
-  } catch (error) {
-    console.error("Lỗi chia sẻ:", error);
-    showToast({
-      message: "Lỗi chia sẻ, thử lại sau",
-    });
   }
-};
-
 
   return (
     <Page className="pt-28 pb-[102px] px-3 bg-white dark:bg-black">
@@ -132,17 +150,16 @@ const handleSharePost = async () => {
       </p>
 
       <img
-        className="h-[25vh] w-full rounded object-contain"
+        className="h-[25vh] w-full rounded object-contain mb-2"
         src={post?.avatar}
         alt={post?.title}
-        style={{ display: "block", marginBottom: 8 }}
       />
 
       <ReactMarkdown className="text-sm text-justify" rehypePlugins={[rehypeRaw]}>
         {post?.content}
       </ReactMarkdown>
 
-      {post?.gallery && post.gallery.length > 0 && (
+      {/* {post?.gallery.length > 0 && (
         <Swiper
           modules={[FreeMode, Autoplay, Navigation, Pagination]}
           slidesPerView={1}
@@ -152,35 +169,25 @@ const handleSharePost = async () => {
           pagination={{ clickable: true }}
           autoplay={{ delay: 3000 }}
           className="room-swiper"
-          style={{ width: "100%", maxWidth: "600px" }}
         >
           {post.gallery.map((url, idx) => (
             <SwiperSlide key={idx}>
               <img
                 className="h-[25vh] w-full rounded object-cover"
-                src={url.startsWith("http") ? url : `${url}`}
-                alt={`${post.title || "image"} - ${idx + 1}`}
-                style={{ display: "block", marginBottom: 8 }}
+                src={url}
+                alt={`${post.title} - ${idx + 1}`}
               />
             </SwiperSlide>
           ))}
         </Swiper>
-      )}
+      )} */}
 
-      {/* Chia sẻ & Liên hệ */}
       <div className="mt-6 grid grid-cols-2 items-center justify-center gap-4 py-2 border-t border-b border-1 border-black-700">
-       <button>
-        <a
-          onClick={handleSharePost}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-sm gap-1 flex justify-center items-center text-red-600 pointer"
-        >
+        <button onClick={handleSharePost} className="text-sm gap-1 flex justify-center items-center text-red-600">
           <Icon icon="zi-share" size={14} /> Chia sẻ
-        </a>
         </button>
         <a
-          href="https://zalo.me/0396767186"
+          href="https://zalo.me/adsdigi"
           target="_blank"
           rel="noopener noreferrer"
           className="text-sm gap-1 flex justify-center items-center text-red-600"

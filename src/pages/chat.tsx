@@ -20,7 +20,7 @@ export default function ChatPage() {
           </p>
 
           <a
-            href="https://zalo.me/0396767186"
+            href="https://zalo.me/adsdigi"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center "
