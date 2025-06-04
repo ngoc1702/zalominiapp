@@ -13,7 +13,7 @@ function TABLE_LADIPAGE() {
           <div className="flex flex-col min-w-[240px] max-md:max-w-full">
             <div className="text-xl  font-medium tracking-tighter max-md:max-w-full max-md:leading-[24px] text-[#141718]">
               <span className="font-semibold">Bảng Giá Dịch Vụ Thiết Kế</span>
-              <span className="font-semibold text-[#CD2027]">Ladipage</span>
+              <span className="font-semibold text-[#CD2027]"> Ladipage</span>
               {/* <span className="font-semibold text-[#3e795c]">(VNĐ)</span> */}
             </div>
           </div>

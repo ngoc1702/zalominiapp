@@ -1,5 +1,4 @@
 import { Page } from "zmp-ui";
-import { getSetting, authorize, openPermissionSetting,   } from "zmp-sdk/apis";
 
 import { useEffect } from "react";
 import BANNER from "@/components/banner";
@@ -7,46 +6,6 @@ import INTRO from "@/components/intro";
 import SERVICE from "@/components/service";
 
 function HomePage() {
-  useEffect(() => {
-    checkPermissions();
-   
-  }, []);
-
-  const checkPermissions = async () => {
-    try {
-      // Bước 1: Lấy quyền đã cấp
-      const setting = await getSetting();
-
-      const grantedLocation = setting.authSetting?.["scope.userLocation"] === true;
-      const grantedPhone = setting.authSetting?.["scope.userPhonenumber"] === true;
-
-      const missingScopes: string[] = [];
-      if (!grantedLocation) missingScopes.push("scope.userLocation");
-      if (!grantedPhone) missingScopes.push("scope.userPhonenumber");
-
-      if (missingScopes.length > 0) {
-        // Bước 2: Xin quyền còn thiếu
-        const result = await authorize({
-          scopes: missingScopes as any,
-        });
-
-        if (
-          result["scope.userLocation"] !== true ||
-          result["scope.userPhonenumber"] !== true
-        ) {
-          openPermissionSetting();
-        }
-      }
-    } catch (error) {
-      const code = (error as any).code;
-      if (code === -201) {
-        console.warn("Người dùng từ chối cấp quyền.");
-      } else {
-        console.error("Lỗi khi xin quyền:", error);
-      }
-    }
-  };
-
 
   return (
     <Page

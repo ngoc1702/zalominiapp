@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   getUserInfo,
   getPhoneNumber,
@@ -9,6 +9,9 @@ import {
   createShortcut,
   followOA,
   viewOAQr,
+  getSetting,
+  authorize,
+  openPermissionSetting,
 } from "zmp-sdk/apis";
 import { Avatar, Page, Text, Button, Icon } from "zmp-ui";
 import { toast } from "react-toastify";
@@ -17,6 +20,7 @@ import LOGO from "@/image/cropped-logo-tron-ADSDIGI.png";
 import ZALO from "@/image/icons8-zalo-48.png";
 import QR_CODE from "@/image/download.png";
 import BG_LABEl from "@/image/bg_img.png";
+import BG_LABEll from "@/image/bg-fki.png";
 import QRCode from "react-qr-code";
 
 interface UserProfile {
@@ -45,34 +49,80 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [showSharePopup, setShowSharePopup] = useState(false);
 
-  const oaLink = "https://zalo.me/3486274299209952959";
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const [userRes, phoneRes] = await Promise.all([
-          getUserInfo({}),
-          getPhoneNumber({}),
-        ]);
+  // const hasRequestedPermissions = useRef(false);
+// useEffect(() => {
+//   checkPermissions();
+// }, []);
 
-        const fetchedUser: UserProfile = {
-          id: userRes.userInfo.id,
-          name: userRes.userInfo.name,
-          avatar: userRes.userInfo.avatar,
-          phone: phoneRes.number,
-        };
+  const fetchUser = async () => {
+  try {
+    const userRes = await getUserInfo({});
 
-        console.log("✅ Thông tin người dùng:", fetchedUser);
-        setUser(fetchedUser);
-      } catch (err) {
-        console.error("❌ Không lấy được thông tin người dùng:", err);
-        toast.error("Bạn cần cấp quyền truy cập thông tin.");
-      } finally {
-        setLoading(false);
-      }
+    const fetchedUser: UserProfile = {
+      id: userRes.userInfo.id,
+      name: userRes.userInfo.name,
+      avatar: userRes.userInfo.avatar,
+      phone: '', // nếu không dùng nữa thì có thể xoá dòng này
     };
 
-    fetchUser();
-  }, []);
+    console.log("✅ Thông tin người dùng:", fetchedUser);
+    setUser(fetchedUser);
+  } catch (err) {
+    console.error("❌ Không lấy được thông tin người dùng:", err);
+    toast.error("Bạn cần cấp quyền truy cập thông tin.");
+  } finally {
+    setLoading(false);
+  }
+};
+
+// useEffect chạy khi component mount
+useEffect(() => {
+  fetchUser();
+}, []);
+
+// Gọi lại fetchUser sau khi cấp quyền
+const checkPermissions = async () => {
+  try {
+    const setting = await getSetting();
+
+    const grantedLocation =
+      setting.authSetting?.["scope.userLocation"] === true;
+    const grantedPhone =
+      setting.authSetting?.["scope.userPhonenumber"] === true;
+
+    if (grantedLocation && grantedPhone) return;
+
+    const missingScopes: string[] = [];
+    if (!grantedLocation) missingScopes.push("scope.userLocation");
+    if (!grantedPhone) missingScopes.push("scope.userPhonenumber");
+
+    if (missingScopes.length > 0) {
+      const result = await authorize({
+        scopes: missingScopes as any,
+      });
+
+      const allGranted =
+        result["scope.userLocation"] === true &&
+        result["scope.userPhonenumber"] === true;
+
+      if (allGranted) {
+        // 🔄 Gọi lại fetchUser để cập nhật UI sau khi cấp quyền
+        fetchUser();
+      } else {
+        openPermissionSetting();
+      }
+    }
+  } catch (error) {
+    const code = (error as any).code;
+    if (code === -201) {
+      console.warn("Người dùng từ chối cấp quyền.");
+    } else {
+      console.error("Lỗi khi xin quyền:", error);
+    }
+  }
+};
+
+
 
   const handleDownloadQR = async () => {
     try {
@@ -221,6 +271,22 @@ export default function ProfilePage() {
         </button>
       </div>
 
+      <div
+        onClick={checkPermissions}
+        className="w-full rounded-xl bg-red-600 text-white px-6 py-6 relative cursor-pointer"
+      >
+        <div className="relative z-10">
+          <p className="text-lg font-semibold mb-1">Đăng ký thành viên</p>
+          <p className="text-sm opacity-90">
+            Nhận thông tin nhanh nhất, mở rộng tiện ích
+          </p>
+        </div>
+
+        <div className="absolute right-6 top-1/2 -translate-y-1/2 text-[100px] opacity-10 z-0">
+          💰
+        </div>
+      </div>
+
       {/* QR Mini App */}
       <div className="text-center border border-gray-200 dark:border-gray-700 p-4 rounded-lg">
         <p className="text-sm text-gray-500 mb-2">
@@ -306,7 +372,7 @@ export default function ProfilePage() {
                 onClick={handleShareToZalo}
                 className="bg-red-600 text-white font-semibold py-2 rounded-full"
               >
-                 <Icon icon="zi-share" size={16} className="mr-1" />
+                <Icon icon="zi-share" size={16} className="mr-1" />
                 Chia sẻ trên Zalo
               </button>
             </div>
