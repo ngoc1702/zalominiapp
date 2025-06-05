@@ -1,11 +1,19 @@
 import { useEffect } from "react";
 import { Page, Text, Button, Icon } from "zmp-ui";
 import SALE from "@/image/customer-support.png";
+import { openChat } from "zmp-sdk/apis";
 
 export default function ChatPage() {
-  // useEffect(() => {
-  //   window.location.href = "https://zalo.me/0396767186";
-  // }, []);
+const handleChatNow = async () => {
+  try {
+    await openChat({
+      type: "oa",
+      id: "3486274299209952959", 
+    });
+  } catch (error) {
+    console.error("Không mở được chat:", error);
+  }
+};
 
   return (
     <Page className="flex flex-col pt-28 pb-20 px-3 space-y-6 bg-white dark:bg-black">
@@ -19,19 +27,13 @@ export default function ChatPage() {
             Nhân viên của chúng tôi sẽ giúp bạn giải đáo mội thắc mắc kịp thời
           </p>
 
-          <a
-            href="https://zalo.me/adsdigi"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center "
-          >
-            <button
-              type="button"
+        
+            <button onClick={handleChatNow}
               className="text-sm text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
             >
               <Icon icon="zi-chat" size={16} className="mb-[2px]" /> Chat ngay
             </button>
-          </a>
+          
         </div>
         <img
           src={SALE}

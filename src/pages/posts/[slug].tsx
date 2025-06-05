@@ -2,9 +2,7 @@ import { useEffect, useState } from "react";
 import { Page, Text, Icon } from "zmp-ui";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
-import { openPostFeed, showToast } from "zmp-sdk/apis";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { FreeMode, Autoplay, Navigation, Pagination } from "swiper/modules";
+import { openPostFeed, showToast, openChat } from "zmp-sdk/apis";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
@@ -74,10 +72,7 @@ export default function PostDetailPage() {
 
 const handleSharePost = async () => {
   try {
-    const currentUrl =
-      typeof window !== "undefined"
-        ? window.location.origin + window.location.pathname
-        : "";
+   const currentUrl = window.location.origin + window.location.pathname;
 
     if (!currentUrl || !post) {
       showToast({ message: "Không thể chia sẻ bài viết" });
@@ -113,6 +108,16 @@ const handleSharePost = async () => {
   }
 };
 
+const handleChatNow = async () => {
+  try {
+    await openChat({
+      type: "oa",
+      id: "3486274299209952959", 
+    });
+  } catch (error) {
+    console.error("Không mở được chat:", error);
+  }
+};
 
 
   if (loading) {
@@ -186,14 +191,11 @@ const handleSharePost = async () => {
         <button onClick={handleSharePost} className="text-sm gap-1 flex justify-center items-center text-red-600">
           <Icon icon="zi-share" size={14} /> Chia sẻ
         </button>
-        <a
-          href="https://zalo.me/adsdigi"
-          target="_blank"
-          rel="noopener noreferrer"
+        <button onClick={handleChatNow}
           className="text-sm gap-1 flex justify-center items-center text-red-600"
         >
           <Icon icon="zi-chat" size={14} /> Liên hệ
-        </a>
+        </button>
       </div>
 
       <RELATED_POST currentSlug={post?.slug} />
