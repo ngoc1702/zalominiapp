@@ -40,11 +40,11 @@ function MODAL_CHAT({ visible, onClose, avatar, title, price }: MODAL_CHATProps)
           <p style={{ color: "#F58220", fontWeight: "semi-bold", fontSize: 16 }}>{price}</p>
         </Box>
 </div>
-<a href="https://zalo.me/0396767186">
+
         <Button fullWidth className="bg-[#F58220]">
            <Icon icon="zi-chat" className="pb-5 pr-1" size={16} /> Liên hệ
         </Button>
-        </a>
+   
       </Box>
     </Sheet>
   );

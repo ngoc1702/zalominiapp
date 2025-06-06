@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Page, Text, Button, Icon } from "zmp-ui";
 import SALE from "@/image/customer-support.png";
-import { openChat } from "zmp-sdk/apis";
+import { openChat,openPhone  } from "zmp-sdk/apis";
 
 export default function ChatPage() {
 const handleChatNow = async () => {
@@ -43,21 +43,20 @@ const handleChatNow = async () => {
       </div>
 
       <div className=" gap-4 max-w-sm px-5 py-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-        <a href="tel:0837999926" target="_blank">
-          <button
-            type="button"
-            className="relative flex gap-6  w-full px-4 py-4 text-sm font-medium border-b border-gray-200 rounded-t-lg hover:bg-gray-100 hover:text-red-800 focus:z-10 "
-          >
-            <div className="flex-shrink-0 w-10 h-10 bg-red-100 text-red-600 rounded-full inline-flex items-center justify-center">
-              <Icon icon="zi-call" />
-            </div>
-            <div className="text-start">
-              <p className="text-red-600">Tổng đài hỗ trợ</p>
-              <p className=" text-black-300">0837999926</p>
-            </div>
-          </button>
-        </a>
-         <a href="mailto:info@adsdigi.com" target="_blank">
+        <button
+  type="button"
+  onClick={() => openPhone({ phoneNumber: "0837999926" })}
+  className="relative flex gap-6 w-full px-4 py-4 text-sm font-medium border-b border-gray-200 rounded-t-lg hover:bg-gray-100 hover:text-red-800 focus:z-10"
+>
+  <div className="flex-shrink-0 w-10 h-10 bg-red-100 text-red-600 rounded-full inline-flex items-center justify-center">
+    <Icon icon="zi-call" />
+  </div>
+  <div className="text-start">
+    <p className="text-red-600">Tổng đài hỗ trợ</p>
+    <p className="text-black-300">0837999926</p>
+  </div>
+</button>
+         
           <button
             type="button"
             className="relative flex gap-6  w-full px-4 py-4 text-sm font-medium border-b border-gray-200 rounded-t-lg hover:bg-gray-100 hover:text-red-800 focus:z-10 "
@@ -70,7 +69,6 @@ const handleChatNow = async () => {
               <p className=" text-black-300">info@adsdigi.com</p>
             </div>
           </button>
-        </a>
         
           <button
             type="button"
